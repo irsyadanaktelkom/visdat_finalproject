@@ -92,7 +92,7 @@ def plot_stock_price(stock):
 
     #return p
 
-    show(p)
+    curdoc().add_root(column(p))
 
 stock = ColumnDataSource(
     data=dict(Date=[], Open=[], Close=[], High=[], Low=[], index=[]))
@@ -105,7 +105,7 @@ elements = list()
 p_stock = plot_stock_price(stock)
 
 
-curdoc().add_root(column(elements))
+#curdoc().add_root(column(elements))
 #curdoc().add_root(column(tabs))
 curdoc().title = 'Bokeh stocks historical prices'
 
