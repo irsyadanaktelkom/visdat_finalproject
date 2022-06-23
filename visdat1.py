@@ -36,22 +36,22 @@ BLUE_LIGHT = Category20[3][1]
 ORANGE = Category20[3][2]
 PURPLE = Category20[9][8]
 BROWN = Category20[11][10]
-
+#membaca file excel untuk diolah ke grafik
 def get_symbol_df(symbol=None):
     df = pd.DataFrame(pd.read_csv('./GGRM.csv'))[-400:]
     df.reset_index(inplace=True)
     df["date"] = pd.to_datetime(df["date"])
     return df
 
-
+#membuat keterangan pada grafik dalam menjelaskan progres dalam pergerakkan saham gudang garam
 def plot_stock_price(stock):
     p = figure(plot_width=W_PLOT, plot_height=H_PLOT, tools=TOOLS,
                title="Stock price", toolbar_location='above')
 
-    inc = stock.data['close'] > stock.data['open_price']
-    dec = stock.data['open_price'] > stock.data['close']
-    view_inc = CDSView(source=stock, filters=[BooleanFilter(inc)])
-    view_dec = CDSView(source=stock, filters=[BooleanFilter(dec)])
+    inc = stock.data['close'] > stock.data['open_price']     #Mendefinisikan grafik data yang mengalami kenaikkan
+    dec = stock.data['open_price'] > stock.data['close']     #Mendefinisikan grafik data yang mengalami penurunan   
+    view_inc = CDSView(source=stock, filters=[BooleanFilter(inc)])  #Memperlihatkan kenaikan data
+    view_dec = CDSView(source=stock, filters=[BooleanFilter(dec)])  #Memperlihatkan penurunan data
 
     # Membuat index pada dataframe
     p.xaxis.major_label_overrides = {
@@ -60,11 +60,11 @@ def plot_stock_price(stock):
     }
     p.xaxis.bounds = (stock.data['index'][0], stock.data['index'][-1])
 
-    p.segment(x0='index', x1='index', y0='low', y1='high', color=RED, source=stock, view=view_inc)
+    p.segment(x0='index', x1='index', y0='low', y1='high', color=RED, source=stock, view=view_inc)  #Mendefinisikan titik perkembangan pada grafik
     p.segment(x0='index', x1='index', y0='low', y1='high', color=GREEN, source=stock, view=view_dec)
 
     p.vbar(x='index', width=VBAR_WIDTH, top='open_price', bottom='close', fill_color=BLUE, line_color=BLUE,
-           source=stock, view=view_inc, name="price")
+           source=stock, view=view_inc, name="price") #Membuat bar untuk harga dari hasil perkembangan saham GGRM
     p.vbar(x='index', width=VBAR_WIDTH, top='open_price', bottom='close', fill_color=RED, line_color=RED,
            source=stock, view=view_dec, name="price")
 
@@ -88,7 +88,7 @@ def plot_stock_price(stock):
                             ("open_price", "@open_price{$0,0.00}"),
                             ("close", "@close{$0,0.00}"),
                             ("volume", "@volume{($ 0.00 a)}")]
-    price_hover.formatters = {"date": 'datetime'}
+    price_hover.formatters = {"date": 'datetime'}  #Membuat deskripsi atas kolom-kolom data yang akan ditampilkan
 
     #return p    
     
