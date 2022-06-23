@@ -43,7 +43,7 @@ def get_symbol_df(symbol=None):
     df["date"] = pd.to_datetime(df["date"])
     return df
 
-#membuat keterangan pada grafik dalam menjelaskan progres dalam pergerakkan saham gudang garam
+#membuat keterangan pada grafik dalam menjelaskan progres dalam pergerakkan saham gudang garam dan menampilkan grafik dengan show dan curdoc
 def plot_stock_price(stock):
     p = figure(plot_width=W_PLOT, plot_height=H_PLOT, tools=TOOLS,
                title="Stock price", toolbar_location='above')
