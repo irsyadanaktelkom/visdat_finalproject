@@ -21,7 +21,7 @@ from bokeh.palettes import Category20
 from bokeh.models.formatters import NumeralTickFormatter
 from bokeh.io import output_notebook, show 
 
-# Define constants
+# Mendefiniskan konstanta untuk ditunjukkan ke grafik
 W_PLOT = 1500
 H_PLOT = 600
 TOOLS = 'pan,wheel_zoom,hover,reset'
@@ -53,7 +53,7 @@ def plot_stock_price(stock):
     view_inc = CDSView(source=stock, filters=[BooleanFilter(inc)])
     view_dec = CDSView(source=stock, filters=[BooleanFilter(dec)])
 
-    # map dataframe indices to date strings and use as label overrides
+    # Membuat index pada dataframe
     p.xaxis.major_label_overrides = {
         i + int(stock.data['index'][0]): date.strftime('%b %d') for i, date in
         enumerate(pd.to_datetime(stock.data["date"]))
@@ -78,21 +78,23 @@ def plot_stock_price(stock):
     p.xaxis.ticker.desired_num_ticks = 40
     p.xaxis.major_label_orientation = 3.14 / 4
 
-    # Select specific tool for the plot
+    # Membuat tool lain untuk ditampilkan
     price_hover = p.select(dict(type=HoverTool))
 
-    # Choose, which glyphs are active by glyph name
+    # Memilih kolom data mana yang paling memengaruhi 
     price_hover.names = ["price"]
-    # Creating tooltips
+    # Membuat tooltips
     price_hover.tooltips = [("datetime", "@date{%Y-%m-%d}"),
                             ("open_price", "@open_price{$0,0.00}"),
                             ("close", "@close{$0,0.00}"),
                             ("volume", "@volume{($ 0.00 a)}")]
     price_hover.formatters = {"date": 'datetime'}
 
-    #return p
+    #return p    
+    
+    #show p     #menampilkan hasil di file lokal
 
-    curdoc().add_root(column(p))
+    curdoc().add_root(column(p)) #Menampilkan hasil di file heroku
 
 stock = ColumnDataSource(
     data=dict(Date=[], Open=[], Close=[], High=[], Low=[], index=[]))
